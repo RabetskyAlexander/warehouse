@@ -254,16 +254,15 @@ class MainController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", "20000M");
 
-        Product::query()->with(['images'])->chunk(500000,function ($products){
-                foreach ($products as $product){
-                    foreach ($product->images as $img){
-                            $path = public_path() . "\\images\\" . $img->product->brand_id . "\\" . $img->src;
-                            if (!is_file($path)){
-
-                                $img->delete();
-                            }
-                }
-            }
+        ProductImage::query()->chunk(500000,function ($images){
+                    foreach ($images as $img){
+                        $names = explode('.', $img->src);
+                        if (count($names)>=2) {
+                            $name = $names[0] . '.' . strtolower($names[1]);
+                            $img->src = $name;
+                            $img->save();
+                        }
+                    }
         });
     }
 
@@ -353,5 +352,6 @@ set_time_limit(0);
             }
         }
     }
+
 
 }

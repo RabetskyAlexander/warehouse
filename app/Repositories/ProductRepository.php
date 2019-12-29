@@ -14,6 +14,7 @@ use App\Models\ProductPart;
 use App\Models\ProductType;
 use App\Utils\Utils;
 use Hamcrest\Util;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository
@@ -98,8 +99,7 @@ class ProductRepository
     public function getAnalogByProductIds(array $ids, $strictType = true)
     {
         $productTypeId = null;
-        if (count($ids) === 1 && $strictType)
-        {
+        if (count($ids) === 1 && $strictType) {
             $productTypeId = Product::query()->whereIn('id', $ids)->first()->type_id;
         }
 
@@ -111,10 +111,9 @@ class ProductRepository
 
         if (empty($productIds) || true) {
             $query = CodeProduct::query()
+                ->whereIn('code_product.product_id', $productIds);
 
-                ->whereIn('code_product.product_id', $productIds) ;
-
-            if ($productTypeId){
+            if ($productTypeId) {
                 $query->join('products', 'products.id', '=', 'code_product.product_id')
                     ->where('products.type_id', $productTypeId);
             }
@@ -178,14 +177,36 @@ class ProductRepository
 
         foreach ($products as $product) {
 
+            if (Auth::user() === null) {
+                $product->importerName = null;
+            }
+
             if (empty($product->image)) {
                 $product->image = '/images/no_photo.jpg';
             } else {
                 $product->image = '/images/' . $product->brand_id . '/' . $product->image;
             }
 
-            if (isset($product->price))
+            if (isset($product->price)) {
                 $product->price = round($product->price * $money->euro, 1, PHP_ROUND_HALF_ODD);
+                if (Auth::user() === null) {
+                    $product->importerName = null;
+
+                    if ($product->price <= 10) {
+                        $product->price = $product->price + 3;
+                    } elseif ($product->price <= 20) {
+                        $product->price = $product->price + 4;
+                    } elseif ($product->price <= 30)
+                        $product->price = $product->price + 5;
+                    elseif ($product->price <= 40)
+                        $product->price = $product->price + 6;
+                    elseif ($product->price <= 50)
+                        $product->price = $product->price + 7;
+                    else
+                        $product->price = $product->price + 11;
+
+                }
+            }
         }
         return $products;
     }
@@ -309,8 +330,7 @@ class ProductRepository
                         }
                     }
 
-                    if ($isAvailableType)
-                    {
+                    if ($isAvailableType) {
                         $isAvailableDiameter = false;
                         if ($attributeDiameter->count() === 1) {
                             $availableDiameter = $attributeDiameter->where('display_value', $types[$type1]['diameter'])->count();
@@ -342,8 +362,7 @@ class ProductRepository
                         }
                     }
 
-                    if ($isAvailableType)
-                    {
+                    if ($isAvailableType) {
                         $isAvailableDiameter = false;
                         if ($attributeDiameter->count() === 2) {
                             $availableDiameter1 = $attributeDiameter->whereIn('display_value', $types[$type1]['diameter'])->count();

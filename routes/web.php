@@ -2,8 +2,7 @@
 
 Route::get('/','MainController@index');
 
-Route::get('/fixProducts','MainController@fixProducts');
-
+Route::get('/fixImage','MainController@fixImage');
 
 Auth::routes();
 
