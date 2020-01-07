@@ -129,11 +129,12 @@ class ProductRepository
 
         $productIds = $productIds->merge($ids);
 
-        $productPartIds = ProductPart::query()
-            ->whereIn('product_part_id', $productIds->slice(0, 500))
-            ->pluck('product_id');
-
-        $productIds = $productIds->merge($productPartIds);
+        if (false) {
+            $productPartIds = ProductPart::query()
+                ->whereIn('product_part_id', $productIds->slice(0, 500))
+                ->pluck('product_id');
+            $productIds = $productIds->merge($productPartIds);
+        }
         $products = $this->sortForTable($productIds);
         return $products;
     }
@@ -165,7 +166,6 @@ class ProductRepository
             ->whereIn('products.id', collect($productIds)->slice(0, 500))
             ->where('brands.is_show', true)
             ->orderBy('count', 'desc')
-
             ->get();
 
         $products = $products->sortBy('price')
