@@ -57,7 +57,7 @@ class ProductController extends Controller
 
         $is_cross = !empty($data['is_cross']);
 
-        return $this->productRepository->getAnalogByProductIds([$data['product_id'], false, $is_cross]);
+        return $this->productRepository->getAnalogByProductIds([$data['product_id']], false, $is_cross);
     }
 
     public function getAnalogByCodeId(Request $request)

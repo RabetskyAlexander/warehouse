@@ -105,11 +105,12 @@ class ProductRepository
 
         $productIds = ProductCross::query()
             ->whereIn('product_id', $ids)
+            ->distinct()
             ->pluck('cross_id');
 
-        $productIds = $productIds->merge($ids); 
+        $productIds = $productIds->merge($ids);
 
-        if (empty($productIds) && $onlyCross == false) {
+        if ($onlyCross == false) {
             $query = CodeProduct::query()
                 ->whereIn('code_product.product_id', $productIds);
 
@@ -127,7 +128,7 @@ class ProductRepository
 
         $productIds = $productIds->merge($ids);
 
-        if (false) {
+        if (true) {
             $productPartIds = ProductPart::query()
                 ->whereIn('product_part_id', $productIds->slice(0, 500))
                 ->pluck('product_id');
