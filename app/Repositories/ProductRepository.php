@@ -155,6 +155,7 @@ class ProductRepository
                 'products.date as datePurchase',
                 'products.price',
                 'products.count',
+                'products.countNew',
                 'products.place',
                 'products.user_description as descriptionClient',
                 'importers.name as importerName',

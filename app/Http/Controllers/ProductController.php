@@ -19,6 +19,23 @@ class ProductController extends Controller
         $this->productRepository = $productRepository;
     }
 
+    public function updateCount(Request $request)
+    {
+        $data = $this->validate($request,
+            [
+                'id' => 'required|integer',
+                'count' => 'required',
+            ]
+        );
+        Product::query()
+            ->where('id',$data['id'])
+            ->update(
+                [
+                    'countNew' => intval($data['count'])
+                ]
+            );
+    }
+
     public function search(Request $request)
     {
         $data = $this->validate($request,

@@ -21,7 +21,6 @@ Route::group(['prefix' => 'products'], function()
     Route::get('absorber-search','ProductController@absorberSearch');
 
     Route::get('break-horse-search','ProductController@breakHoseSearch');
-
 });
 
 Route::group(['prefix' => 'products', 'middleware' => ['auth']], function()
@@ -41,6 +40,8 @@ Route::group(['prefix' => 'products', 'middleware' => ['auth']], function()
     Route::get('code/remove','ProductController@codeRemove');
 
     Route::match(['get', 'post'], 'add','ProductController@add');
+
+    Route::get('count-update','ProductController@updateCount');
 });
 
 Route::get('product-types/search', 'ProductTypeController@search');
