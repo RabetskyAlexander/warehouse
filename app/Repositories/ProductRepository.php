@@ -165,7 +165,7 @@ class ProductRepository
             ->whereIn('products.id', collect($productIds)->slice(0, 500))
             ->where('brands.is_show', true)
             ->orderBy('count', 'desc')
-           
+
             ->get();
 
         $products = $products->sortBy('price')
