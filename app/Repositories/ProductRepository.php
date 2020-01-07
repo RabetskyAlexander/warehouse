@@ -96,7 +96,7 @@ class ProductRepository
         return $products;
     }
 
-    public function getAnalogByProductIds(array $ids, $strictType = true)
+    public function getAnalogByProductIds(array $ids, $strictType = true, $onlyCross = false)
     {
         $productTypeId = null;
         if (count($ids) === 1 && $strictType) {
@@ -109,7 +109,7 @@ class ProductRepository
 
         $productIds = $productIds->merge($ids);
 
-        if (empty($productIds) || true) {
+        if (empty($productIds) || $onlyCross == false) {
             $query = CodeProduct::query()
                 ->whereIn('code_product.product_id', $productIds);
 

@@ -30,6 +30,18 @@
             <div class="col-md-4">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary">Кросс</button>
+                    </div>
+                    <input type="text" class="form-control" id="inputCross">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary btn-clear-cross">X</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
                         <button class="btn btn-outline-secondary" type="button">Тип</button>
                     </div>
                     <input type="text" class="form-control" id="inputType">
@@ -227,6 +239,44 @@
                     .appendTo(ul);
             };
 
+            $("#inputCross").autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/products/search",
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    this.value = ui.item.name;
+                    loadByProductIdCross(ui.item.id);
+                    return false;
+                },
+                response: function (ul, response) {
+                    if (response.content.length === 0) {
+                        $('#inputArticle').css('background-color', '#f77777');
+                    } else {
+                        $('#inputArticle').css('background-color', 'white');
+                    }
+                }
+            })
+                .autocomplete("instance")._renderItem = function (ul, item) {
+
+                return $("<li>")
+                    .append("<div class='product-search-row'> "
+                        + "<div class='product-name-column'>" + item.name + "</div>"
+                        + "<div>" + item.brandName + "</div>"
+                        + "<div>" + (item.typeName ? item.typeName : '') + "</div>"
+                        + "</div>"
+                    )
+                    .appendTo(ul);
+            };
+
             $("#inputCode").autocomplete({
                 source: "/codes/search",
                 minLength: 2,
@@ -265,6 +315,26 @@
             function loadByProductId(productId) {
                 let data = {
                     product_id: productId
+                };
+                preloaderShow();
+                $.ajax({
+                    url: '/products/get/analog/product-id',
+                    data: data,
+                    method: 'get',
+                    success: function (response) {
+                        renderProducts(response);
+                        preloaderHide();
+                    },
+                    error: function () {
+                        preloaderHide();
+                    }
+                });
+            }
+
+            function loadByProductIdCross(productId) {
+                let data = {
+                    product_id: productId,
+                    is_cross: 1
                 };
                 preloaderShow();
                 $.ajax({
@@ -372,6 +442,10 @@
 
             $('.btn-clear-type').on('click', function () {
                 $('#inputType').val('');
+            });
+
+            $('.btn-clear-cross').on('click', function () {
+                $('#inputCross').val('');
             });
 
 

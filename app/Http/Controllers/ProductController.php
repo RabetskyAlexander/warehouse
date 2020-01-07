@@ -51,9 +51,13 @@ class ProductController extends Controller
         $data = $this->validate($request,
             [
                 'product_id' => 'required|integer',
+                'is_cross' => 'integer',
             ]
         );
-        return $this->productRepository->getAnalogByProductIds([$data['product_id']]);
+
+        $is_cross = !empty($data['is_cross']);
+
+        return $this->productRepository->getAnalogByProductIds([$data['product_id'], false, $is_cross]);
     }
 
     public function getAnalogByCodeId(Request $request)
