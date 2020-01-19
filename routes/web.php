@@ -40,8 +40,6 @@ Route::group(['prefix' => 'products', 'middleware' => ['auth']], function()
     Route::get('code/remove','ProductController@codeRemove');
 
     Route::match(['get', 'post'], 'add','ProductController@add');
-
-    Route::get('fix-count','MainController@fixCount');
 });
 
 Route::get('product-types/search', 'ProductTypeController@search');
