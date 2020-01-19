@@ -353,5 +353,19 @@ set_time_limit(0);
         }
     }
 
-
+    public function fixCount(){
+        set_time_limit(0);
+        ini_set("memory_limit", "20000M");
+        Product::query()
+            ->update([
+                'count' => 0,
+            ]);
+        Product::query()->chunk(100000,
+            function ($products){
+                foreach ($products as $product){
+                    $product->count = $product->countNew;
+                    $product->save();
+                }
+        });
+    }
 }

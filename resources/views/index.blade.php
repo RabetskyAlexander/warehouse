@@ -67,7 +67,6 @@
             <th scope="col">Закупка</th>
             <th scope="col">Место</th>
             <th scope="col">Комментарий</th>
-            <th scope="col">Учет</th>
             <th scope="col">Шт</th>
             <th scope="col">Цена</th>
         </tr>
@@ -413,13 +412,6 @@
                         + '<th>' + item.price + '</th>'
                         + '<th>' + (item.place ? item.place : ' ') + '</th>'
                         + '<th>' + (item.descriptionClient ? item.descriptionClient : ' ') + '</th>'
-                        + '<th>'
-                        + '<form style="display: flex;">'
-                        + '<input name="id" type="hidden" value=' + item.id + ' />'
-                        + '<input name="count" style="width: 50px;" class="count-input-new form-control" type="number" value=' + item.countNew + ' />'
-                        + '<input type="submit" class="btn-update-count btn-success btn" value="save"/>'
-                        + '</form>'
-                        + '</th>'
                         + '<th>' + item.count + '</th>'
                         + '<th>' + item.price + '</th>'
                         + '<th>' +
@@ -535,23 +527,6 @@
                     $.ajax({
                         'method': 'get',
                         url: '/client-cars/product/add',
-                        data: data,
-                        success: function (response) {
-
-                        },
-                        error: function (error) {
-
-                        }
-                    });
-                }
-                if ($(element).hasClass('btn-update-count'))
-                {
-                    event.preventDefault();
-                    let data = $(event.target).closest('form').serialize();
-                    console.log(data);
-                    $.ajax({
-                        'method': 'get',
-                        url: '/products/count-update',
                         data: data,
                         success: function (response) {
 

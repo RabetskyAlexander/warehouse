@@ -41,7 +41,7 @@ Route::group(['prefix' => 'products', 'middleware' => ['auth']], function()
 
     Route::match(['get', 'post'], 'add','ProductController@add');
 
-    Route::get('count-update','ProductController@updateCount');
+    Route::get('fix-count','MainController@fixCount');
 });
 
 Route::get('product-types/search', 'ProductTypeController@search');
