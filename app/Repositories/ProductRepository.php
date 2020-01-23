@@ -191,18 +191,18 @@ class ProductRepository
                 if (Auth::user() === null) {
                     $product->importerName = null;
 
-                    if ($product->price <= 10) {
-                        $product->price = $product->price + 3;
-                    } elseif ($product->price <= 20) {
-                        $product->price = $product->price + 4;
-                    } elseif ($product->price <= 30)
-                        $product->price = $product->price + 5;
-                    elseif ($product->price <= 40)
-                        $product->price = $product->price + 6;
-                    elseif ($product->price <= 50)
-                        $product->price = $product->price + 7;
-                    else
-                        $product->price = $product->price + 11;
+//                    if ($product->price <= 10) {
+//                        $product->price = $product->price + 3;
+//                    } elseif ($product->price <= 20) {
+//                        $product->price = $product->price + 4;
+//                    } elseif ($product->price <= 30)
+//                        $product->price = $product->price + 5;
+//                    elseif ($product->price <= 40)
+//                        $product->price = $product->price + 6;
+//                    elseif ($product->price <= 50)
+//                        $product->price = $product->price + 7;
+//                    else
+//                        $product->price = $product->price + 11;
 
                 }
             }

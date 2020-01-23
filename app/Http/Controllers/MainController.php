@@ -352,4 +352,27 @@ set_time_limit(0);
             }
         }
     }
+
+    public function products(){
+        $products = Product::with(['type', 'brand'])->where('count','>',0)->get();
+        foreach ($products as $product) {
+            $cars = DB::table('article_links')
+                 ->join('passanger_cars','passanger_cars.id','=','article_links.linkageid')
+                ->join('models','models.id','=','passanger_cars.modelid')
+                 ->where('article_links.product_id',$product->id)
+                ->select('models.fulldescription as name')
+                ->get();
+
+             $carsName = $cars->unique()->implode('name',' ; ');
+
+
+             echo  '<p>' . $product->name . ' ' . $product->brand->name . ' ' . $product->type->name . ' '
+                 . ($product->price * 2.35 )
+                 . '<br>'
+                 . $carsName
+                 . '</p>';
+
+
+        }
+    }
 }

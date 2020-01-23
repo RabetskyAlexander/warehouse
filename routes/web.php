@@ -2,8 +2,6 @@
 
 Route::get('/','MainController@index');
 
-Route::get('/fixImage','MainController@fixImage');
-
 Auth::routes();
 
 Route::group(['prefix' => 'products'], function()
@@ -21,6 +19,8 @@ Route::group(['prefix' => 'products'], function()
     Route::get('absorber-search','ProductController@absorberSearch');
 
     Route::get('break-horse-search','ProductController@breakHoseSearch');
+
+    Route::get('/','MainController@products');
 });
 
 Route::group(['prefix' => 'products', 'middleware' => ['auth']], function()
